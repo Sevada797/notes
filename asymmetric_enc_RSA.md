@@ -7,17 +7,17 @@
 
 **NOTE: These charachteristics are unique to RSA, and can differ based on the formula/cipher, but some concepts of course are general**
 
-Pub keys can:
+Pub keys can:<br>
 Encrypt a message<br>
 Decrypt a message encrypted by private key
-<br>
+<br><br>
 Pub keys can't:<br>
 Decrypt a message encrypted by pub key itself (this would've compromised the security in it's core)
-<br>
+<br><br>
 Private keys can:<br>
 Encrypt a message<br>
 Decrypt a message encrypted by pub key
-<br>
+<br><br>
 Private keys can't:<br>
 (this is not so important, focus on other things)<br>
 Decrypt a message encrypted by private key itself. <br>
