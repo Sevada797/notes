@@ -79,3 +79,32 @@ well this happens time to time, not the first case nor last.
 ###  Oauth 2  Resources permission grant flow 
 
 Same as Oauth login just in scope mention what you want, and then using `access_token` get whatever access you need, from the Oauth resource provider.
+
+
+## Security angles overall
+
+1) `access_token`, `id_token`  swapping with yours from local instance.
+
+2) State not verified against session case,  during account attachment.
+You see, there is also the case, where you need to attach SSO to your account login methods, after you registered in traditional way.
+
+And this is also a juicy area, you can basically with **acc B** not finish your ?code=...&state=... request, and pass it to **acc A**
+
+If he clicks, and there is no verification of state against session, the **account A** will now have attackers gmail attached to his account,
+as an alternate login method.
+Attacker can now simply login with his gmail to **acc A**, anytime.
+
+3) I am writing this, inspired by my latest finding.
+Same `client_id`  --> and considering cryptography is used against `sub` or `email`.
+If anything as such is observed cross different domains of same company,
+Or cross subdomains of same domain that have no shared login methods in general (else there may be intended one session cross subs, we don't need these cases).
+
+We can try cookie or token of **site A acc A** on **site B acc A**,
+
+If it works report it as Oauth 2 RFC violation 
+```
+RFC 6750 §5.2 — resource servers MUST validate tokens were issued for them
+```
+Cause it is basically, **ATO on site A acc A === ATO on site B acc A**.
+
+P.S. This is theory rn in my mind, but shall work imho.
