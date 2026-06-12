@@ -108,3 +108,16 @@ RFC 6750 §5.2 — resource servers MUST validate tokens were issued for them
 Cause it is basically, **ATO on site A acc A === ATO on site B acc A**.
 
 P.S. This is theory rn in my mind, but shall work imho.
+
+
+## Running your own local Oauth 2.0 instance
+
+There is actually simple implementations if you lookup in github, here one I tested, 
+https://github.com/backupbrain/google-oauth2-php/
+
+Just replace all `<?` with `<?php`  -  cause short tags are by default off after PHP 5 or so.
+
+And also fix one error: undefined method call 
+`getHttpResponse` -> change this to `getResponse` in `oauth2callback/index.php`, or vice versa in change in `HttpPost.class.php`
+
+And finally overwrite config.php, with your own google Oauth `client_id` & `client_secret`, google it to find out how get these.
