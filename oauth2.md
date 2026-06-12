@@ -31,7 +31,7 @@ header("Location: " . $request_to);
 After user clicks on his account, google redirects to the specified redirect_uri get parameter value (which is also specified in your google console, to prevent malicious redirects,
 however code stealing by universal param redirect can cause ATO if I got the logic correct)
 With ?code=... 
-3)  Now the last part, the page that should hangle google redirect with code parameter 
+3)  Now the last part, the page that should handle google redirect with code parameter 
 ```
     $code = $_GET['code'];
     $url = 'https://accounts.google.com/o/oauth2/token';
@@ -46,17 +46,17 @@ With ?code=...
     );
 ```
 
-After this, we can get access_token, id_token, refresh_token 
+This request basically gives us back access_token, id_token, refresh_token etc... 
 NOTE: Refresh tokens can be non-expireable which is dangerous if exposed
 
 **Quick notes:**
 Now access_token and id_token are sensitive, and if they are ever exposed somewhere, then passed to backend
-We as a pentester, should try access_token or id_token swapping.
+We as a pentester, should try access_token or id_token swapping, by our own access_token which we can get after authing via Oauth from our local instance.
 
 So passing that to backend,
-If blind trust , that's a bug  -  basically attacker can create fake app, make user register with his Google Oauth,
-then after getting the access_token  --> pass that to the app X, which has some /endpoint, where when you pass the access_token, tries to get email with that access_token,
-and  instantly passes user session after.
+If there is a blind trust, that's a bug  -  basically attacker can create fake app, make user register with his Google Oauth,
+then after getting the access_token  --> pass that to the app X, which has some /endpoint, where when you pass the access_token, it tries to get email/sub with that access_token,
+and instantly passes user session after.
 
 by default in code= case, the Idp (Google) handles the check that code should belong to client_id
 So there is no spoofing possible in this part of flow.  (See again the 3-rd part of the flow)
@@ -72,7 +72,7 @@ This token swapping can be tested.
 
 After this request,  app get's in JSON sub and email of the user.
 
-It's recommended for apps to trust the `sub` (it's just numeric ID)
+It's recommended for apps to trust the `sub` (it's just numeric ID) during session initiation.
 Cause trusting email can cause some account linking confusions, I also thought about homoglyph attacks here, small talk with AI reveals I just re-discovered a niche bug class,
 well this happens time to time, not the first case nor last.
 
