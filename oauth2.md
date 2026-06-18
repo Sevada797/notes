@@ -129,3 +129,26 @@ And also fix one error: undefined method call
 `getHttpResponse` -> change this to `getResponse` in `oauth2callback/index.php`, or vice versa in change in `HttpPost.class.php`
 
 And finally overwrite config.php, with your own google Oauth `client_id` & `client_secret`, google it to find out how get these.
+
+
+## FAQ
+What's the value of aud ?
+Same as client_id that ...
+
+Is `sub` same for all when requesting info with access_token ?
+Yes, after all oauth process is done, and backend last process gets the `access_token` and gets user info with it, it gets the `sub` same always
+
+What invloces first process ? 
+Pure redirect to google endp with params `client_id` & `redirect_uri` accordingly correct to what's in DB
+
+What invloces 2nd process ?
+Click -> google does fetch with these client_id redirect_uri and the account selected, redirs to page --> which redirs to `redirect_uri` with `code`
+
+What invloces 3rd process ?
+Backend making post req, to get `access_token` from code, and `code` expires after shortly
+
+Can code be swapped ??
+My last check showed **NO** , because it can be tied cryptographically to both `client_id` and `redirect_uri`
+
+
+
