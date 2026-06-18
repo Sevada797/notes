@@ -88,10 +88,13 @@ Same as Oauth login just in scope mention what you want, and then using `access_
 
 ## Security angles overall
 
-1) `code` swapping
-or if oauth implicit flow better try `access_token`  swapping ?? O_o
- with yours from local instance.
-Usually devs do the aud check after code->access_token->aud check->auth the `sub` automatic process, so code swapping is enough 
+~~1) `code` swapping ? No this can't give anything checked.
+But if oauth implicit flow better try `access_token`  swapping 
+with yours from local instance.
+Usually devs do the aud check after code->access_token->aud check->auth the `sub` automatic process, so code swapping is enough~~
+Wait lol, this would be google oauth bug if so,
+If I could do change `code` cross oauth apps.
+It's like creating oauth phishing campaign easily.
 
 2) State not verified against session case,  during account attachment.
 You see, there is also the case, where you need to attach SSO to your account login methods, after you registered in traditional way.
@@ -136,7 +139,7 @@ What's the value of aud ?
 Same as client_id that ...
 
 Is `sub` same for all when requesting info with access_token ?
-Yes, after all oauth process is done, and backend last process gets the `access_token` and gets user info with it, it gets the `sub` same always
+Yes, after all oauth process is done, and backend last process gets the `access_token` and gets user info with it, it gets the `sub` , same always even cross oauth apps.
 
 What invloces first process ? 
 Pure redirect to google endp with params `client_id` & `redirect_uri` accordingly correct to what's in DB
