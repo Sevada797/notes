@@ -27,9 +27,12 @@ $request_to = $url . '?' . http_build_query($params);
 // forward the user to the login access page on the OAuth 2 server
 header("Location: " . $request_to);
 ```
-2) This brings user to the Google Oauth page.
-After user clicks on his account, google redirects to the specified redirect_uri get parameter value (which is also specified in your google console, to prevent malicious redirects,
-however code stealing by universal param redirect can cause ATO if I got the logic correct)
+We just are redired to something like:
+```
+https://accounts.google.com/o/oauth2/auth?response_type=code&client_id=688079177280-krbr7jg5jd8f0oegl5pq2br7i9rghdha.apps.googleusercontent.com&redirect_uri=http%3A%2F%2F127.0.0.1%3A8000%2Foauth2callback%2F&scope=openid+email+profile
+```
+This brings user to the Google Oauth page.
+2) After user clicks on his account, google redirects to the specified redirect_uri get parameter value (which is also specified in your google console, to prevent malicious redirects, it should be checked against the client_id <-> redirect_uris_allowed  in DB )
 With ?code=... 
 3)  Now the last part, the page that should handle google redirect with code parameter 
 ```
@@ -50,7 +53,7 @@ This request basically gives us back access_token, id_token, refresh_token etc..
 NOTE: Refresh tokens can be non-expireable which is dangerous if exposed
 
 **Quick notes:**
-Now access_token and id_token are sensitive, and if they are ever exposed somewhere, then passed to backend
+Now access_token is sensitive, and if they are ever exposed somewhere, then passed to backend
 We as a pentester, should try access_token or id_token swapping, by our own access_token which we can get after authing via Oauth from our local instance.
 
 So passing that to backend,
@@ -86,7 +89,7 @@ Same as Oauth login just in scope mention what you want, and then using `access_
 ## Security angles overall
 
 1) `code` swapping
-or if oauth implicit flow better try `access_token`, `id_token`  swapping ?? O_o
+or if oauth implicit flow better try `access_token`  swapping ?? O_o
  with yours from local instance.
 Usually devs do the aud check after code->access_token->aud check->auth the `sub` automatic process, so code swapping is enough 
 
