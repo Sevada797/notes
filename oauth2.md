@@ -76,6 +76,8 @@ It's recommended for apps to trust the `sub` (it's just numeric ID) during sessi
 Cause trusting email can cause some account linking confusions, I also thought about homoglyph attacks here, small talk with AI reveals I just re-discovered a niche bug class,
 well this happens time to time, not the first case nor last.
 
+But most importantly the `aud` check is used, to verify that the `code` wasn't spoofed from another sites google oauth process.
+
 ###  Oauth 2  Resources permission grant flow 
 
 Same as Oauth login just in scope mention what you want, and then using `access_token` get whatever access you need, from the Oauth resource provider.
@@ -83,7 +85,10 @@ Same as Oauth login just in scope mention what you want, and then using `access_
 
 ## Security angles overall
 
-1) `access_token`, `id_token`  swapping with yours from local instance.
+1) `code` swapping
+or if oauth implicit flow better try `access_token`, `id_token`  swapping ?? O_o
+ with yours from local instance.
+Usually devs do the aud check after code->access_token->aud check->auth the `sub` automatic process, so code swapping is enough 
 
 2) State not verified against session case,  during account attachment.
 You see, there is also the case, where you need to attach SSO to your account login methods, after you registered in traditional way.
